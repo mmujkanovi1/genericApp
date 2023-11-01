@@ -1,0 +1,30 @@
+version: '3.5'
+
+services:
+  faktoring:
+    env_file:
+      - .env
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ${CONFIG_PATH}
+        target: /usr/share/config
+      - type: bind
+        source: ${RESOURCE_PATH}
+        target: /usr/share/txt
+    image: faktoring
+    container_name: faktoring
+    hostname: faktoring
+    restart: unless-stopped
+    ports:
+      - "8091:8091"
+      - "8888:8888"
+    networks:
+      - faktoring
+
+networks:
+  faktoring:
+    name: faktoring
+    driver: bridge

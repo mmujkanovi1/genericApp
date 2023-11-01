@@ -1,0 +1,1 @@
+INSERT INTO FACT_VRSTE_UGOVORA (ID, OZNAKA, SIFRA, OPIS) VALUES (1, 'Test oznaka 1', 11, 'Testni opis 1');

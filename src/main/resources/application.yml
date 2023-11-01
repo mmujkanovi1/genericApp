@@ -1,0 +1,66 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/hairdressingShop
+    password: postgres
+    jpa:
+      show-sql: true
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        temp:
+          use_jdbc_metadata_defaults: false
+      jadira:
+        usertype:
+          autoRegisterUserTypes: true
+
+  profiles:
+    active: dev, fast
+
+  application:
+    name: BARBERS_SHOP
+
+server:
+  http:
+    port: 8080
+  port: 8095
+
+springdoc:
+  swagger-ui:
+    operationsSorter: method
+    disable-swagger-default-url: true
+  paths-to-match: /api/v1/**
+  packages-to-scan: ba.barbers.shop
+  show-actuator: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info
+  info:
+    build:
+      enabled: true
+    env:
+      enabled: true
+    git:
+      enabled: true
+security:
+  jwt:
+    expireTime: 300
+    header: AUTHORIZATION
+    secretKey: NcRfUjXn2r5u7x!A%D*G-KaPdSgVkYp3s6v9y/B?E(H+MbQeThWmZq4t7w!z%C*F
+path:
+  BarbersShopUrlHttpsFE: http://barbersshop.local:448
+config:
+  realmName: Barbersshop
+info:
+  application:
+    name: ${spring.application.name}
+    description: Faktoring servis
+  profiles:
+    active: '@spring.profiles.active@'

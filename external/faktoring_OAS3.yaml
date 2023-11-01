@@ -1,0 +1,1310 @@
+openapi: 3.0.1
+info:
+  title: Faktoring
+  description: Servis koji implementira REST API za unos i evidenciju svih poslova otkupa potraživanja (faktoring).
+  version: 0.0.1
+
+paths:
+
+  # Vrsta ugovora/proizvoda
+  /api/v1/vrste-ugovora/{id}:
+    get:
+      tags:
+        - Vrsta ugovora/proizvoda
+      summary: Dobavi vrstu ugovora
+      description: Dobavi vrstu ugovora po id.
+      operationId: getVrstaUgovora
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Odgovor koji sadrži vrstu ugovora sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VrstaUgovoraResponse'
+        "404":
+          description: Greška u slučaju da ne postoji vrsta ugovora sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+    delete:
+      tags:
+        - Vrsta ugovora/proizvoda
+      summary: Izbriši vrstu ugovora
+      description: Izbriši vrstu ugovora po id.
+      operationId: deleteVrstaUgovora
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Uspješno izbrisana vrsta ugovora.
+        "404":
+          description: Greška u slučaju da ne postoji vrsta ugovora sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags:
+        - Vrsta ugovora/proizvoda
+      summary: Ažuriraj vrstu ugovora
+      description: Ažuriraj vrstu ugovora po id.
+      operationId: putVrstaUgovora
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VrstaUgovoraRequest'
+        required: true
+      responses:
+        "204":
+          description: Uspješno ažurirana vrsta ugovora.
+        "404":
+          description: Greška u slučaju da ne postoji vrsta ugovora sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/vrste-ugovora:
+    post:
+      tags:
+        - Vrsta ugovora/proizvoda
+      summary: Kreiraj novu vrstu ugovora
+      description: Kreiranje i spašavanje nove vrste ugovora.
+      operationId: postVrstaUgovora
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VrstaUgovoraRequest'
+        required: true
+      responses:
+        "200":
+          description: Odgovor koji sadrži id nove vrste ugovora.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdResponse'
+
+  # Izvor sredstava
+  /api/v1/izvor-sredstava/{izvor}:
+    get:
+      tags:
+        - Izvor sredstava
+      summary: Dobavi izvor sredstava
+      description: Dobavi izvor sredstava po izvoru.
+      operationId: getIzvorSredstava
+      parameters:
+        - name: izvor
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Odgovor koji sadrži izvor sredstava sa traženim izvorom.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IzvorSredstavaResponse'
+        "404":
+          description: Greška u slučaju da ne postoji izvor sredstava sa traženim izvorom.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+    delete:
+      tags:
+        - Izvor sredstava
+      summary: Izbriši izvor sredstava
+      description: Izbriši izvor sredstava po izvoru.
+      operationId: deleteIzvorSredstava
+      parameters:
+        - name: izvor
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Uspješno izbrisan izvor sredstava.
+        "404":
+          description: Greška u slučaju da ne postoji izvor sredstava sa traženim izvorom.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags:
+        - Izvor sredstava
+      summary: Ažuriraj izvor sredstava
+      description: Ažuriraj izvor sredstava po izvoru.
+      operationId: putIzvorSredstava
+      parameters:
+        - name: izvor
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateIzvorSredstavaRequest'
+        required: true
+      responses:
+        "204":
+          description: Uspješno ažuriran izvor sredstava.
+        "404":
+          description: Greška u slučaju da ne postoji izvor sredstava sa traženim izvorom.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/izvor-sredstava:
+    post:
+      tags:
+        - Izvor sredstava
+      summary: Kreiraj novi izvor sredstava
+      description: Kreiranje i spašavanje novog izvora sredstava.
+      operationId: postIzvorSredstava
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IzvorSredstavaRequest'
+        required: true
+      responses:
+        "200":
+          description: Odgovor koji sadrži izvor novog izvora sredtava.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StringResponse'
+
+
+
+
+  # Šifarnik za vrstu ugovora
+  /api/v1/sifarnici-za-vrstu-ugovora/{sifarnik-naziv}/{vrsta-ugovora-id}:
+    post:
+      tags:
+        - Šifarnik za vrstu ugovora
+      summary: Kreiraj novu listu šifarnika za vrstu ugovora
+      description: Kreiranje i spašavanje nove liste šifarnika za vrstu ugovora
+      operationId: postSifarnikZaVrstuUgovoraList
+      parameters:
+        - name: sifarnik-naziv
+          required: true
+          in: path
+          schema:
+            $ref: '#/components/schemas/SifarnikZaVrstuUgovoraNaziv'
+        - name: vrsta-ugovora-id
+          required: true
+          in: path
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenericList'
+        required: true
+      responses:
+        "204":
+          description: Uspješno dodana nova lista šifarnika za vrstu ugovora
+        "404":
+          description: Greška u slučaju da ne postoji vrsta ugovora sa navedenim id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "400":
+          description: Greška u slučaju dodavanja već postojećeg šifarnika za vrstu ugovora
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/sifarnici-za-vrstu-ugovora/{sifarnik-naziv}/{vrsta-ugovora-id}/{sifra}:
+    delete:
+      tags:
+        - Šifarnik za vrstu ugovora
+      summary: Izbriši šifarnik za vrstu ugovora
+      description: Izbriši šifarnik za vrstu ugovora sa traženom šifrom za traženu vrstu ugovora
+      operationId: deleteSifarnikZaVrstuUgovora
+      parameters:
+        - name: sifarnik-naziv
+          required: true
+          in: path
+          schema:
+            $ref: '#/components/schemas/SifarnikZaVrstuUgovoraNaziv'
+        - name: vrsta-ugovora-id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: sifra
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Uspješno izbrisan šifarnik za vrstu ugovora
+        "404":
+          description: Greška u slučaju da ne postoji traženi šifarnik za vrstu ugovora
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags:
+        - Šifarnik za vrstu ugovora
+      summary: Ažuriraj šifarnik za vrstu ugovora
+      description: Ažuriraj šifarnik za vrstu ugovora sa traženom šifrom za traženu vrstu ugovora
+      operationId: putSifarnikZaVrstuUgovora
+      parameters:
+        - name: sifarnik-naziv
+          required: true
+          in: path
+          schema:
+            $ref: '#/components/schemas/SifarnikZaVrstuUgovoraNaziv'
+        - name: vrsta-ugovora-id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: sifra
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "204":
+          description: Uspješno ažuriran šifarnik za vrstu ugovora
+        "404":
+          description: Greška u slučaju da ne postoji traženi šifarnik za vrstu ugovora
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # Tip finansiranja
+  /api/v1/tipovi-finansiranja/{id}:
+    get:
+      tags:
+        - Tip finansiranja
+      summary: Dobavi tip finansiranja
+      description: Dobavi tip finansiranja po id.
+      operationId: getTipFinansiranja
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Odgovor koji sadrži tip finansiranja sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdOpisResponse'
+        "404":
+          description: Greška u slučaju da ne postoji tip finansiranja sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Tip finansiranja
+      summary: Izbriši tip finansiranja
+      description: Izbriši tip finansiranja po id
+      operationId: deleteTipFinansiranja
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Uspješno izbrisan tip finansiranja
+        "404":
+          description: Greška u slučaju da ne postoji tip finansiranja sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - Tip finansiranja
+      summary: Ažuriraj tip finansiranja
+      description: Ažuriraj tip finansirnja po id.
+      operationId: putTipFinansiranja
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "204":
+          description: Uspješno ažuriran tip finansiranja.
+        "404":
+          description: Greška u slučaju da ne postoji tip finansiranja sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/tipovi-finansiranja:
+    post:
+      tags:
+        - Tip finansiranja
+      summary: Kreiraj novi tip finansiranja
+      description: Kreiranje i spašavanje novog tipa finansiranja
+      operationId: postTipFinansiranja
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "200":
+          description: Odgovor koji sadrži id novog tipa finansiranja
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdResponse'
+
+
+  # Tip kamate
+  /api/v1/tipovi-kamate/{id}:
+    get:
+      tags:
+        - Tip kamate
+      summary: Dobavi tip kamate
+      description: Dobavi tip kamate po id.
+      operationId: getTipKamate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Odgovor koji sadrži tip kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdOpisResponse'
+        "404":
+          description: Greška u slučaju da ne postoji tip kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Tip kamate
+      summary: Izbriši tip kamate
+      description: Izbriši tip kamate po id
+      operationId: deleteTipKamate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Uspješno izbrisan tip kamate
+        "404":
+          description: Greška u slučaju da ne postoji tip kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags:
+        - Tip kamate
+      summary: Ažuriraj tip kamate
+      description: Ažuriraj tip kamate po id.
+      operationId: putTipKamate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "204":
+          description: Uspješno ažuriran tip kamate.
+        "404":
+          description: Greška u slučaju da ne postoji tip kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/tipovi-kamate:
+    post:
+      tags:
+        - Tip kamate
+      summary: Kreiraj novi tip kamate
+      description: Kreiranje i spašavanje novog tipa kamate
+      operationId: postTipKamate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "200":
+          description: Odgovor koji sadrži id novog tipa kamate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdResponse'
+
+  # Tip ugovora
+  /api/v1/tipovi-ugovora/{id}:
+    get:
+      tags:
+        - Tip ugovora
+      summary: Dobavi tip ugovora
+      description: Dobavi tip ugovora po id.
+      operationId: getTipUgovora
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Odgovor koji sadrži tip ugovora sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdOpisResponse'
+        "404":
+          description: Greška u slučaju da ne postoji tip ugovora sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Tip ugovora
+      summary: Izbriši tip ugovora
+      description: Izbriši tip ugovora po id
+      operationId: deleteTipUgovora
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Uspješno izbrisan tip ugovora
+        "404":
+          description: Greška u slučaju da ne postoji tip ugovora sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags:
+        - Tip ugovora
+      summary: Ažuriraj tip ugovora
+      description: Ažuriraj tip ugovora po id.
+      operationId: putTipUgovora
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "204":
+          description: Uspješno ažuriran tip ugovora.
+        "404":
+          description: Greška u slučaju da ne postoji tip ugovora sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/tipovi-ugovora:
+    post:
+      tags:
+        - Tip ugovora
+      summary: Kreiraj novi tip ugovora
+      description: Kreiranje i spašavanje novog tipa ugovora
+      operationId: postTipUgovora
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "200":
+          description: Odgovor koji sadrži id novog tipa ugovora
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdResponse'
+
+
+
+  # Platitelj naknade kamate
+  /api/v1/platitelji-naknade-kamate/{id}:
+    get:
+      tags:
+        - Platitelj naknade kamate
+      summary: Dobavi platitelja naknade kamate
+      description: Dobavi platitelja naknade kamate po id.
+      operationId: getPlatiteljNaknadeKamate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Odgovor koji sadrži platitelja naknade kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdOpisResponse'
+        "404":
+          description: Greška u slučaju da ne postoji platitelj naknade kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Platitelj naknade kamate
+      summary: Izbriši platitelja naknade kamate
+      description: Izbriši platitelja naknade kamate po id
+      operationId: deletePlatiteljNaknadeKamate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Uspješno izbrisan platitelj naknade kamate
+        "404":
+          description: Greška u slučaju da ne postoji platitelj naknade kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags:
+        - Platitelj naknade kamate
+      summary: Ažuriraj platitelja naknade kamate
+      description: Ažuriraj platitelja naknade kamate po id.
+      operationId: putPlatiteljNaknadeKamate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "204":
+          description: Uspješno ažuriran platitelj naknade kamate
+        "404":
+          description: Greška u slučaju da ne postoji platitelj naknade kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/platitelji-naknade-kamate:
+    post:
+      tags:
+        - Platitelj naknade kamate
+      summary: Kreiraj novog platitelja naknade kamate
+      description: Kreiranje i spašavanje novog platitelja naknade kamate
+      operationId: postPlatiteljNaknadeKamate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "200":
+          description: Odgovor koji sadrži id novog platitelja naknade kamate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdResponse'
+
+
+  # Platitelj zatezne kamate
+  /api/v1/platitelji-zatezne-kamate/{id}:
+    get:
+      tags:
+        - Platitelj zatezne kamate
+      summary: Dobavi platitelja zatezne kamate
+      description: Dobavi platitelja zatezne kamate po id.
+      operationId: getPlatiteljZatezneKamate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Odgovor koji sadrži platitelja zatezne kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdOpisResponse'
+        "404":
+          description: Greška u slučaju da ne postoji platitelj zatezne kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Platitelj zatezne kamate
+      summary: Izbriši platitelja zatezne kamate
+      description: Izbriši platitelja zatezne kamate po id
+      operationId: deletePlatiteljZatezneKamate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Uspješno izbrisan platitelj zatezne kamate
+        "404":
+          description: Greška u slučaju da ne postoji platitelj zatezne kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags:
+        - Platitelj zatezne kamate
+      summary: Ažuriraj platitelja zatezne kamate
+      description: Ažuriraj platitelja zatezne kamate po id.
+      operationId: putPlatiteljZatezneKamate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "204":
+          description: Uspješno ažuriran platitelj zatezne kamate
+        "404":
+          description: Greška u slučaju da ne postoji platitelj zatezne kamate sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/platitelji-zatezne-kamate:
+    post:
+      tags:
+        - Platitelj zatezne kamate
+      summary: Kreiraj novog platitelja zatezne kamate
+      description: Kreiranje i spašavanje novog platitelja zatezne kamate
+      operationId: postPlatiteljZatezneKamate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "200":
+          description: Odgovor koji sadrži id novog platitelja zatezne kamate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdResponse'
+
+
+  # Fact status
+  /api/v1/fact-status/{id}:
+    get:
+      tags:
+        - Status
+      summary: Dobavi status
+      description: Dobavi status po id.
+      operationId: getFactStatus
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Odgovor koji sadrži opis statusa sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdOpisResponse'
+        "404":
+          description: Greška u slučaju da ne postoji status sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Status
+      summary: Izbriši status
+      description: Izbriši status po id
+      operationId: deleteStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Uspješno izbrisan status
+        "404":
+          description: Greška u slučaju da ne postoji status sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags:
+        - Status
+      summary: Ažuriraj status
+      description: Ažuriraj status po id.
+      operationId: putStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "204":
+          description: Uspješno ažuriran status.
+        "404":
+          description: Greška u slučaju da ne postoji status sa traženim id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/fact-status:
+    post:
+      tags:
+        - Status
+      summary: Kreiraj novi status
+      description: Kreiranje i spašavanje novog statusa
+      operationId: postFactStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpisRequest'
+        required: true
+      responses:
+        "200":
+          description: Odgovor koji sadrži id novog statusa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdResponse'
+
+  # List Of Values (LOV)
+  /api/v1/lov/vrste-ugovora:
+    get:
+      tags:
+        - List Of Values (LOV)
+      summary: Dobavi listu vrijednosti (List Of Values / LOV)
+      description: Dobavi listu vrijednosti - vrsta ugovora
+      operationId: getLOVVrstaUgovora
+      responses:
+        "200":
+          description: Odgovor koji sadrži listu vrijednosti vrsti ugovora
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericList'
+
+  /api/v1/lov/tipovi-finansiranja:
+    get:
+      tags:
+        - List Of Values (LOV)
+      summary: Dobavi listu vrijednosti (List Of Values / LOV)
+      description: Dobavi listu vrijednosti - tip finansiranja
+      operationId: getLOVTipFinansiranja
+      responses:
+        "200":
+          description: Odgovor koji sadrži listu vrijednosti tipova finansiranja
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericList'
+
+
+  /api/v1/lov/tipovi-kamate:
+    get:
+      tags:
+        - List Of Values (LOV)
+      summary: Dobavi listu vrijednosti (List Of Values / LOV)
+      description: Dobavi listu vrijednosti - tip kamate
+      operationId: getLOVTipKamate
+      responses:
+        "200":
+          description: Odgovor koji sadrži listu vrijednosti tipova kamate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericList'
+
+  /api/v1/lov/tipovi-ugovora:
+    get:
+      tags:
+        - List Of Values (LOV)
+      summary: Dobavi listu vrijednosti (List Of Values / LOV)
+      description: Dobavi listu vrijednosti - tip ugovora
+      operationId: getLOVTipUgovora
+      responses:
+        "200":
+          description: Odgovor koji sadrži listu vrijednosti tipova ugovora
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericList'
+
+  /api/v1/lov/statusi:
+    get:
+      tags:
+        - List Of Values (LOV)
+      summary: Dobavi listu vrijednosti (List Of Values / LOV)
+      description: Dobavi listu vrijednosti - status
+      operationId: getLOVStatus
+      responses:
+        "200":
+          description: Odgovor koji sadrži listu vrijednosti statusa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericList'
+
+
+  /api/v1/lov/platitelji-naknade-kamate:
+    get:
+      tags:
+        - List Of Values (LOV)
+      summary: Dobavi listu vrijednosti (List Of Values / LOV)
+      description: Dobavi listu vrijednosti - platitelj naknade kamate
+      operationId: getLOVTPlatiteljNaknadeKamate
+      responses:
+        "200":
+          description: Odgovor koji sadrži listu vrijednosti platitelja naknade kamate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericList'
+
+  /api/v1/lov/platitelji-zatezne-kamate:
+    get:
+      tags:
+        - List Of Values (LOV)
+      summary: Dobavi listu vrijednosti (List Of Values / LOV)
+      description: Dobavi listu vrijednosti - platitelj zatezne kamate
+      operationId: getLOVTPlatiteljZatezneKamate
+      responses:
+        "200":
+          description: Odgovor koji sadrži listu vrijednosti platitelja zatezne kamate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericList'
+
+  /api/v1/lov/izvori_sredstava:
+    get:
+      tags:
+        - List Of Values (LOV)
+      summary: Dobavi listu vrijednosti (List Of Values / LOV)
+      description: Dobavi listu vrijednosti - izvori sredstava
+      operationId: getLOVIzvorSredstava
+      responses:
+        "200":
+          description: Odgovor koji sadrži listu vrijednosti izvora sredstava
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericList'
+
+  /api/v1/lov/prodavaci:
+    get:
+      tags:
+        - List Of Values (LOV)
+      summary: Dobavi listu vrijednosti (List Of Values / LOV)
+      description: Dobavi listu vrijednosti - prodavaci
+      operationId: getLOVProdavac
+      responses:
+        "200":
+          description: Odgovor koji sadrži listu vrijednosti prodavaca
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericList'
+
+  /api/v1/lov/duznici:
+    get:
+      tags:
+        - List Of Values (LOV)
+      summary: Dobavi listu vrijednosti (List Of Values / LOV)
+      description: Dobavi listu vrijednosti - duznici
+      operationId: getLOVDuznik
+      responses:
+        "200":
+          description: Odgovor koji sadrži listu vrijednosti duznika
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericList'
+
+  /api/v1/lov/sifarnici-za-vrstu-ugovora/{sifarnik-naziv}/{vrsta-ugovora-id}:
+    get:
+      parameters:
+        - name: sifarnik-naziv
+          required: true
+          in: path
+          schema:
+            $ref: '#/components/schemas/SifarnikZaVrstuUgovoraNaziv'
+        - name: vrsta-ugovora-id
+          required: true
+          in: path
+          schema:
+            type: integer
+          description: Id vrste ugovora
+      tags:
+        - List Of Values (LOV)
+      summary: Dobavi listu vrijednosti (List Of Values / LOV)
+      description: Dobavi listu vrijednosti - šifarnik za vrstu ugovora
+      operationId: getLOVSifarnikZaVrstuUgovora
+      responses:
+        "200":
+          description: Odgovor koji sadrži listu vrijednosti šifarnika za vrstu ugovora
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericList'
+
+
+
+
+components:
+
+  schemas:
+
+    # MessageDetail
+    MessageDetail:
+      description: Objekat koji sadrži tekst poruke, timestamp nastanka poruke i mapu metapodataka/detalja o poruci
+      type: object
+      properties:
+        text:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        key:
+          type: string
+        params:
+          type: array
+          items:
+            type: string
+
+    # MessageSeverity
+    MessageSeverity:
+      description: Enum koji opisuje vrstu poruke
+      type: string
+      enum: [
+        "info",
+        "success",
+        "warning",
+        "error"
+      ]
+
+    # Message
+    Message:
+      type: object
+      properties:
+        severity:
+          $ref: '#/components/schemas/MessageSeverity'
+        code:
+          type: integer
+        title:
+          type: string
+        detail:
+          $ref: '#/components/schemas/MessageDetail'
+
+
+    # ErrorResponse
+    ErrorResponse:
+      type: object
+      properties:
+        source:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+
+
+    # Requests
+
+    # VrstaUgovoraRequest
+    VrstaUgovoraRequest:
+      type: object
+      properties:
+        opis:
+          type: string
+          description: Opis ugovora
+          example: "Ugovor koji definiše pravila domaćeg faktoringa bez prava regresa"
+        oznaka:
+          type: string
+          description: Oznaka ugovora
+          example: "Domaći faktoring bez prava regresa"
+        sifra:
+          type: integer
+          description: Šifra ugovora
+          example: 31
+
+    UpdateIzvorSredstavaRequest:
+      type: object
+      properties:
+        naziv:
+          type: string
+          description: Naziv izvora sredstava
+          example: "Naziv izvora sredstava"
+
+    # OpisRequest
+    OpisRequest:
+      type: object
+      properties:
+        opis:
+          type: string
+          description: Opis šifarnika
+          example: "Novi opis resursa"
+
+    # IzvorSredstavaRequest
+    IzvorSredstavaRequest:
+      type: object
+      properties:
+        izvor:
+          type: string
+          description: Izvor
+          example: "Izvor sredstava"
+        naziv:
+          type: string
+          description: naziv iznosa
+          example: "Naziv iznosa"
+
+    # Responses
+
+    # IdResponse
+    IdResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Id resursa koji se kreira
+          example: 42
+
+    # StringResponse
+    StringResponse:
+      type: object
+      properties:
+        izvor:
+          type: string
+          description: izvor resursa koji se kreira
+          example: izvor
+
+    # IdOpisResponse
+    IdOpisResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Id resursa
+        opis:
+          type: string
+          description: Opis resursa
+
+    # VrstaUgovoraResponse
+    VrstaUgovoraResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Vrsta ugovora id.
+          example: 42
+        opis:
+          type: string
+          description: Opis vrste ugovora
+          example: "Ugovor koji definiše pravila domaćeg faktoringa sa pravom regresa"
+        oznaka:
+          type: string
+          description: Oznaka vrste ugovora
+          example: "Domaći faktoring s pravom regresa"
+        sifra:
+          type: integer
+          description: Šifra vrste ugovora
+          example: 30
+
+    # IzvorSredstavaResponse
+    IzvorSredstavaResponse:
+      type: object
+      properties:
+        izvor:
+          type: string
+          description: izvor sredstava.
+          example: izvor
+        naziv:
+          type: string
+          description: naziv izvora sredstava
+          example: "Naziv"
+
+
+    # Modeli korišteni kao req/res body
+
+    # SifraOpis
+    SifraOpis:
+      type: object
+      properties:
+        sifra:
+          type: integer
+          description: Šifra šifarnika. U ovisnosti od vrste šifarnika, ovo polje može imati različita značenja.
+          example: 40
+        opis:
+          type: string
+          description: Opis šifarnika
+          example: "Opis resursa"
+
+
+    # GenericList
+    GenericList:
+      description: Generički objekat koji služi kao omotač oko liste objekata.
+      type: object
+      properties:
+        list:
+          description: Lista objekata
+          type: array
+          items:
+            type: object
+
+
+    SifarnikZaVrstuUgovoraNaziv:
+      type: string
+      enum:
+        - POKRICE_KUPAC
+        - POKRICE_PRODAVAC
+        - PROCENAT_FINANSIRANJA
+        - ROK_FINANSIRANJA
